@@ -1,0 +1,7 @@
+{
+  "type": "examplemod:heatsource",
+  "block": {
+    "item": "minecraft:torch"
+  },
+  "time": 50
+}

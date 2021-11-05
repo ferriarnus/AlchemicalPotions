@@ -1,0 +1,22 @@
+{
+  "type": "examplemod:alchemicalbrewing",
+  "potions": [
+    {
+      "item": "minecraft:potion"
+    },
+    {
+      "item": "minecraft:potion"
+    }
+  ],
+  "binders": [
+    {
+      "item": "minecraft:glowstone"
+    },
+    {
+      "item": "minecraft:glowstone"
+    }
+  ],
+  "result": {
+    "item": "examplemod:draught"
+  }
+}
