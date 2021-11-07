@@ -6,6 +6,7 @@ import com.example.examplemod.blockentity.BlockentityRegistry;
 import com.example.examplemod.blockentity.CauldronBE;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -53,5 +54,12 @@ public class AlchemicalCauldron extends Block implements EntityBlock{
 	@Nullable
 	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> p_152133_, BlockEntityType<E> p_152134_, BlockEntityTicker<? super E> p_152135_) {
 		return p_152134_ == p_152133_ ? (BlockEntityTicker<A>)p_152135_ : null;
+	}
+	
+	@Override
+	public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
+		if (pLevel.getBlockEntity(pPos) instanceof CauldronBE be) {
+			CauldronBE.entityInside(pLevel, pPos, pState, pEntity, be);
+		}
 	}
 }

@@ -7,13 +7,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -45,21 +45,22 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 
 	@Override
 	public boolean matches(RecipeWrapper pContainer, Level pLevel) {
-		StackedContents stackedcontents = new StackedContents();
-		java.util.List<ItemStack> inputs = new java.util.ArrayList<>();
-		int i = 0;
-		
-		for(int j = 0; j < pContainer.getContainerSize(); ++j) {
-			ItemStack itemstack = pContainer.getItem(j);
-			if (!itemstack.isEmpty()) {
-				++i;
-				if (isSimple)
-					stackedcontents.accountStack(itemstack, 1);
-				else inputs.add(itemstack);
+		for (int i=0; i< pContainer.getContainerSize(); i++) {
+			if (i%2==0) {
+				if (i > this.getPotions().size()) {
+					break;
+				} else if (!this.getPotions().get(i/2).test(pContainer.getItem(i))) {
+					return false;
+				}
+			} else {
+				if (i > this.getBinders().size()) {
+					break;
+				} else if (!this.getBinders().get((i-1)/2).test(pContainer.getItem(i))) {
+					return false;
+				}
 			}
 		}
-		
-		return i == this.ingredients.size() && (isSimple ? stackedcontents.canCraft(this, (IntList)null) : net.minecraftforge.common.util.RecipeMatcher.findMatches(inputs,  this.ingredients) != null);
+		return true;
 	}	
 	
 
@@ -67,11 +68,11 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 	public ItemStack assemble(RecipeWrapper pContainer) {
 		ItemStack stack = getResultItem().copy();
 		List<MobEffectInstance> list = new ArrayList<>();
-		if (PotionUtils.getPotion(getPotions().get(0).getItems()[0]) == PotionUtils.getPotion(getPotions().get(1).getItems()[0])) {
-			//return ItemStack.EMPTY;
+		if (PotionUtils.getPotion(pContainer.getItem(0)) == PotionUtils.getPotion(pContainer.getItem(2))) {
+			return ItemStack.EMPTY;
 		}
-		List<MobEffectInstance> e1 = PotionUtils.getMobEffects(getPotions().get(0).getItems()[0]);
-		List<MobEffectInstance> e2 = PotionUtils.getMobEffects(getPotions().get(1).getItems()[0]);
+		List<MobEffectInstance> e1 = PotionUtils.getMobEffects(pContainer.getItem(0));
+		List<MobEffectInstance> e2 = PotionUtils.getMobEffects(pContainer.getItem(2));
 		AtomicBoolean same = new AtomicBoolean(false);
 		e1.forEach(effect1 -> {
 			e2.forEach(effect2 -> {
@@ -81,11 +82,16 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 			});
 		});
 		if (same.get()) {
-			//return ItemStack.EMPTY;
+			return ItemStack.EMPTY;
 		}
 		list.addAll(e1);
 		list.addAll(e2);
 		PotionUtils.setCustomEffects(stack, list);
+		ListTag tag = new ListTag();
+		tag.add(StringTag.valueOf(PotionUtils.getPotion(pContainer.getItem(0)).getRegistryName().toString()));
+		tag.add(StringTag.valueOf(PotionUtils.getPotion(pContainer.getItem(2)).getRegistryName().toString()));
+		tag.sort((t1,t2) -> t1.getAsString().compareTo(t2.getAsString()));
+		stack.getOrCreateTag().put("Potions", tag);
 		return stack;
 	}
 
@@ -158,11 +164,11 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 		}
 		
 		private static NonNullList<Ingredient> itemsFromJson(JsonArray pIngredientArray) {
-			NonNullList<Ingredient> nonnulllist = NonNullList.create();
+			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(Math.max(pIngredientArray.size(),4), Ingredient.of(ItemStack.EMPTY));
 			for(int i = 0; i < pIngredientArray.size(); ++i) {
 				Ingredient ingredient = Ingredient.fromJson(pIngredientArray.get(i));
 				if (!ingredient.isEmpty()) {
-					nonnulllist.add(ingredient);
+					nonnulllist.set(i,ingredient);
 				}
 			}
 			return nonnulllist;

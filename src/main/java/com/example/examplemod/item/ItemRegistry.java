@@ -17,4 +17,5 @@ public class ItemRegistry {
 	}
 	
 	public static final RegistryObject<Draught> DRAUGHT = ITEMS.register("draught", Draught::new);
+	public static final RegistryObject<SplashDraught> SPLASH_DRAUGHT = ITEMS.register("splash_draught", SplashDraught::new);
 }
