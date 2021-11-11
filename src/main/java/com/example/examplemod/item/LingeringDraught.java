@@ -51,7 +51,7 @@ public class LingeringDraught extends ThrowableMultiPotion{
 										tag.sort((t1,t2) -> t1.getAsString().compareTo(t2.getAsString()));
 										stack.getOrCreateTag().put("Potions", tag);
 										pItems.forEach(i -> {
-											if (ItemStack.tagMatches(stack, i)) {
+											if (ItemStack.isSame(stack, i) && ItemStack.tagMatches(stack, i)) {
 												pItems.remove(i);
 											}
 										});

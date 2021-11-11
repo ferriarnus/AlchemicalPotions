@@ -36,5 +36,6 @@ public class ClientSetup {
 	@SubscribeEvent
 	public static void registerItemColor(ColorHandlerEvent.Item event) {
 		event.getItemColors().register(new PotionColor(), ItemRegistry.DRAUGHT.get());
+		event.getItemColors().register(new PotionColor(), ItemRegistry.ELIXIR.get());
 	}
 }

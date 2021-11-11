@@ -16,12 +16,15 @@ public class PotionColor implements ItemColor{
 			return 0xffffff;
 		}
 		ListTag list =  p_92672_.getOrCreateTag().getList("Potions", 8);
+		if (p_92673_ == list.size()+1) {
+			Potion potion = Registry.POTION.get(new ResourceLocation(list.getString(list.size()/2)));
+			return PotionUtils.getColor(potion);
+		}
 		for (int i=0; i< list.size(); i++) {
 			if (i+1 == p_92673_) {
 				Potion potion = Registry.POTION.get(new ResourceLocation(list.getString(i)));
 				return PotionUtils.getColor(potion);
 			}
-			
 		}
 		return 0xffffff;
 	}

@@ -97,6 +97,15 @@ public class CauldronBE extends BlockEntity{
 		return s;
 	}
 	
+	public void clear() {
+		handler.clear();
+		fluid.drain(1000, FluidAction.EXECUTE);
+		time = 0;
+		active = false;
+		result = ItemStack.EMPTY;
+		color = Fluids.WATER.getAttributes().getColor();
+	}
+	
 	
 	public static void servertick(Level pLevel, BlockPos pPos, BlockState pState, CauldronBE pBlockEntity) {
 		if (pBlockEntity.time > 0) {
@@ -220,7 +229,7 @@ public class CauldronBE extends BlockEntity{
 		
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (active) {
+			if (active || !result.isEmpty() || fluid.getFluidAmount() != fluid.getCapacity()) {
 				return stack;
 			}
 			return super.insertItem(slot, stack, simulate);
@@ -246,5 +255,4 @@ public class CauldronBE extends BlockEntity{
 			setChanged();
 		}
 	}
-
 }

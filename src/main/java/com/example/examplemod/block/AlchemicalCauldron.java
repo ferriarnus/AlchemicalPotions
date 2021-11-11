@@ -50,12 +50,16 @@ public class AlchemicalCauldron extends Block implements EntityBlock{
 	public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
 			BlockHitResult pHit) {
 		if (pLevel.getBlockEntity(pPos) instanceof CauldronBE be) {
+			if (pPlayer.isCrouching() && pPlayer.getItemInHand(pHand).isEmpty()) {
+				be.clear();
+				return InteractionResult.SUCCESS;
+			}
 			FluidUtil.interactWithFluidHandler(pPlayer, pHand, pLevel, pPos, null);
 			if (pPlayer.getItemInHand(pHand).is(ItemRegistry.DRAUGHTBOTTLE.get()) && !be.getResult().isEmpty() && be.getResult().is(ItemRegistry.DRAUGHT.get()) ) {
 				pPlayer.getItemInHand(pHand).shrink(1);
 				pPlayer.addItem(be.HandleResult());
 			}
-			if (pPlayer.getItemInHand(pHand).is(ItemRegistry.ELIXERBOTTLE.get()) && !be.getResult().isEmpty() && be.getResult().is(ItemRegistry.ELIXER.get()) ) {
+			if (pPlayer.getItemInHand(pHand).is(ItemRegistry.ELIXERBOTTLE.get()) && !be.getResult().isEmpty() && be.getResult().is(ItemRegistry.ELIXIR.get()) ) {
 				pPlayer.getItemInHand(pHand).shrink(1);
 				pPlayer.addItem(be.HandleResult());
 			}

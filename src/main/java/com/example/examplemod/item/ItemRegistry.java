@@ -21,6 +21,6 @@ public class ItemRegistry {
 	public static final RegistryObject<SplashDraught> SPLASH_DRAUGHT = ITEMS.register("splash_draught", SplashDraught::new);
 	public static final RegistryObject<LingeringDraught> LINGERING_DRAUGHT = ITEMS.register("lingering_draught", LingeringDraught::new);
 	
-	public static final RegistryObject<MultiPotionBottle> ELIXERBOTTLE = ITEMS.register("elixer_bottle", MultiPotionBottle::new);
-	public static final RegistryObject<Elixer> ELIXER = ITEMS.register("elixer", Elixer::new);
+	public static final RegistryObject<MultiPotionBottle> ELIXERBOTTLE = ITEMS.register("elixir_bottle", MultiPotionBottle::new);
+	public static final RegistryObject<Elixir> ELIXIR = ITEMS.register("elixir", Elixir::new);
 }

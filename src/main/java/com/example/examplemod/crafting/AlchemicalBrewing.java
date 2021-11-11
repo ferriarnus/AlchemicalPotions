@@ -39,26 +39,21 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 		this.potions = potions;
 		this.resultitem = result;
 		this.binders = binders;
-		this.ingredients.addAll(binders);
-		this.ingredients.addAll(potions);
+		for (int i=0; i< 8; i++) {
+			if (i%2==0) {
+				this.ingredients.add(this.potions.get(i/2));
+			} else {
+				this.ingredients.add(this.binders.get((i-1)/2));
+			}
+		}
 		this.isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
 	}
 
 	@Override
 	public boolean matches(RecipeWrapper pContainer, Level pLevel) {
-		for (int i=0; i< pContainer.getContainerSize(); i++) {
-			if (i%2==0) {
-				if (i > this.getPotions().size()) {
-					break;
-				} else if (!this.getPotions().get(i/2).test(pContainer.getItem(i))) {
-					return false;
-				}
-			} else {
-				if (i > this.getBinders().size()) {
-					break;
-				} else if (!this.getBinders().get((i-1)/2).test(pContainer.getItem(i))) {
-					return false;
-				}
+		for (int i = 0; i< pContainer.getContainerSize(); i++) {
+			if (!ingredients.get(i).test(pContainer.getItem(i))) {
+				return false;
 			}
 		}
 		return true;
@@ -167,7 +162,7 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 		}
 		
 		private static NonNullList<Ingredient> itemsFromJson(JsonArray pIngredientArray) {
-			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(Math.max(pIngredientArray.size(),4), Ingredient.of(ItemStack.EMPTY));
+			NonNullList<Ingredient> nonnulllist = NonNullList.withSize(4, Ingredient.of(ItemStack.EMPTY));
 			for(int i = 0; i < pIngredientArray.size(); ++i) {
 				Ingredient ingredient = Ingredient.fromJson(pIngredientArray.get(i));
 				if (!ingredient.isEmpty()) {
