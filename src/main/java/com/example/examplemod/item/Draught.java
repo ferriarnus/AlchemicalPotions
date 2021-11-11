@@ -18,7 +18,7 @@ import net.minecraft.world.item.alchemy.Potions;
 public class Draught extends MultiPotion{
 
 	public Draught() {
-		super(new Properties().tab(CreativeModeTab.TAB_BREWING));
+		super(new Properties().tab(CreativeModeTab.TAB_BREWING).stacksTo(8));
 	}
 	
 	@Override

@@ -4,9 +4,13 @@ import javax.annotation.Nullable;
 
 import com.example.examplemod.blockentity.BlockentityRegistry;
 import com.example.examplemod.blockentity.CauldronBE;
+import com.example.examplemod.item.ItemRegistry;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -16,10 +20,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fluids.FluidUtil;
 
 public class AlchemicalCauldron extends Block implements EntityBlock{
 	private static final VoxelShape INSIDE = box(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
@@ -38,6 +44,24 @@ public class AlchemicalCauldron extends Block implements EntityBlock{
 	@Override
 	public VoxelShape getInteractionShape(BlockState p_60547_, BlockGetter p_60548_, BlockPos p_60549_) {
 		return INSIDE;
+	}
+	
+	@Override
+	public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
+			BlockHitResult pHit) {
+		if (pLevel.getBlockEntity(pPos) instanceof CauldronBE be) {
+			FluidUtil.interactWithFluidHandler(pPlayer, pHand, pLevel, pPos, null);
+			if (pPlayer.getItemInHand(pHand).is(ItemRegistry.DRAUGHTBOTTLE.get()) && !be.getResult().isEmpty() && be.getResult().is(ItemRegistry.DRAUGHT.get()) ) {
+				pPlayer.getItemInHand(pHand).shrink(1);
+				pPlayer.addItem(be.HandleResult());
+			}
+			if (pPlayer.getItemInHand(pHand).is(ItemRegistry.ELIXERBOTTLE.get()) && !be.getResult().isEmpty() && be.getResult().is(ItemRegistry.ELIXER.get()) ) {
+				pPlayer.getItemInHand(pHand).shrink(1);
+				pPlayer.addItem(be.HandleResult());
+			}
+			return InteractionResult.SUCCESS;
+		}
+		return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -68,28 +69,30 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 	public ItemStack assemble(RecipeWrapper pContainer) {
 		ItemStack stack = getResultItem().copy();
 		List<MobEffectInstance> list = new ArrayList<>();
-		if (PotionUtils.getPotion(pContainer.getItem(0)) == PotionUtils.getPotion(pContainer.getItem(2))) {
-			return ItemStack.EMPTY;
-		}
-		List<MobEffectInstance> e1 = PotionUtils.getMobEffects(pContainer.getItem(0));
-		List<MobEffectInstance> e2 = PotionUtils.getMobEffects(pContainer.getItem(2));
-		AtomicBoolean same = new AtomicBoolean(false);
-		e1.forEach(effect1 -> {
-			e2.forEach(effect2 -> {
-				if (effect1.getDescriptionId().equals(effect2.getDescriptionId())) {
-					same.set(true);
+		List<ItemStack> potions = new ArrayList<>();
+		for (int i=0; i< pContainer.getContainerSize(); i++) {
+			if (i%2==0) {
+				if (pContainer.getItem(i).is(Items.POTION)) {
+					potions.add(pContainer.getItem(i));
 				}
-			});
+			}
+		}
+		AtomicBoolean empty = new AtomicBoolean(false);
+		potions.forEach(p -> {
+			if (PotionUtils.getPotion(p).getEffects().isEmpty()) {
+				empty.set(true);
+			}
 		});
-		if (same.get()) {
+		if (empty.get()) {
 			return ItemStack.EMPTY;
 		}
-		list.addAll(e1);
-		list.addAll(e2);
+		potions.forEach(p -> list.addAll(PotionUtils.getMobEffects(p)));
+		if (list.size() != list.stream().map(e -> e.getDescriptionId()).distinct().count()) {
+			return ItemStack.EMPTY;
+		}
 		PotionUtils.setCustomEffects(stack, list);
 		ListTag tag = new ListTag();
-		tag.add(StringTag.valueOf(PotionUtils.getPotion(pContainer.getItem(0)).getRegistryName().toString()));
-		tag.add(StringTag.valueOf(PotionUtils.getPotion(pContainer.getItem(2)).getRegistryName().toString()));
+		potions.forEach(p -> tag.add(StringTag.valueOf(PotionUtils.getPotion(p).getRegistryName().toString())));
 		tag.sort((t1,t2) -> t1.getAsString().compareTo(t2.getAsString()));
 		stack.getOrCreateTag().put("Potions", tag);
 		return stack;

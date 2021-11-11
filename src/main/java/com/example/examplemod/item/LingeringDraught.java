@@ -15,10 +15,10 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 
-public class SplashDraught extends ThrowableMultiPotion{
+public class LingeringDraught extends ThrowableMultiPotion{
 
-	public SplashDraught() {
-		super(new Properties().tab(CreativeModeTab.TAB_BREWING).stacksTo(8), false);
+	public LingeringDraught() {
+		super(new Properties().tab(CreativeModeTab.TAB_BREWING).stacksTo(8), true);
 	}
 	
 	@Override
@@ -65,4 +65,5 @@ public class SplashDraught extends ThrowableMultiPotion{
 			}
 		}
 	}
+
 }

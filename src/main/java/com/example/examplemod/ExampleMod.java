@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.example.examplemod.block.BlockRegistry;
 import com.example.examplemod.blockentity.BlockentityRegistry;
+import com.example.examplemod.entity.EntityRegistry;
 import com.example.examplemod.item.ItemRegistry;
 
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +22,7 @@ public class ExampleMod
         BlockRegistry.register();
         BlockentityRegistry.register();
         ItemRegistry.register();
+        EntityRegistry.register();
     }
 
     
