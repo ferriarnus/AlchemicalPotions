@@ -3,6 +3,10 @@ package com.example.examplemod.crafting;
 
 
 import com.example.examplemod.ExampleMod;
+import com.example.examplemod.crafting.brewing.AlchemicalBrewing;
+import com.example.examplemod.crafting.brewing.IAlchemicalBrewing;
+import com.example.examplemod.crafting.heat.HeatSource;
+import com.example.examplemod.crafting.heat.IHeatSource;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;

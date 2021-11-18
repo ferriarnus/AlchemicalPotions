@@ -1,4 +1,4 @@
-package com.example.examplemod.crafting;
+package com.example.examplemod.crafting.brewing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +85,7 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 		if (list.size() != list.stream().map(e -> e.getDescriptionId()).distinct().count()) {
 			return ItemStack.EMPTY;
 		}
+		list.sort(null);
 		PotionUtils.setCustomEffects(stack, list);
 		ListTag tag = new ListTag();
 		potions.forEach(p -> tag.add(StringTag.valueOf(PotionUtils.getPotion(p).getRegistryName().toString())));

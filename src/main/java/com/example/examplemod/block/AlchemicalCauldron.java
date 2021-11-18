@@ -59,7 +59,7 @@ public class AlchemicalCauldron extends Block implements EntityBlock{
 				pPlayer.getItemInHand(pHand).shrink(1);
 				pPlayer.addItem(be.HandleResult());
 			}
-			if (pPlayer.getItemInHand(pHand).is(ItemRegistry.ELIXERBOTTLE.get()) && !be.getResult().isEmpty() && be.getResult().is(ItemRegistry.ELIXIR.get()) ) {
+			if (pPlayer.getItemInHand(pHand).is(ItemRegistry.ELIXIRBOTTLE.get()) && !be.getResult().isEmpty() && be.getResult().is(ItemRegistry.ELIXIR.get()) ) {
 				pPlayer.getItemInHand(pHand).shrink(1);
 				pPlayer.addItem(be.HandleResult());
 			}

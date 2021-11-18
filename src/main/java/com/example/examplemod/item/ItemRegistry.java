@@ -2,7 +2,9 @@ package com.example.examplemod.item;
 
 import com.example.examplemod.ExampleMod;
 
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,9 +20,12 @@ public class ItemRegistry {
 	
 	public static final RegistryObject<MultiPotionBottle> DRAUGHTBOTTLE = ITEMS.register("draught_bottle", MultiPotionBottle::new);
 	public static final RegistryObject<Draught> DRAUGHT = ITEMS.register("draught", Draught::new);
-	public static final RegistryObject<SplashDraught> SPLASH_DRAUGHT = ITEMS.register("splash_draught", SplashDraught::new);
-	public static final RegistryObject<LingeringDraught> LINGERING_DRAUGHT = ITEMS.register("lingering_draught", LingeringDraught::new);
+	public static final RegistryObject<ThrowableMultiPotion> SPLASH_DRAUGHT = ITEMS.register("splash_draught", () -> new ThrowableMultiPotion(new Properties().tab(CreativeModeTab.TAB_BREWING).stacksTo(8), false));
+	public static final RegistryObject<ThrowableMultiPotion> LINGERING_DRAUGHT = ITEMS.register("lingering_draught", () -> new ThrowableMultiPotion(new Properties().tab(CreativeModeTab.TAB_BREWING).stacksTo(8), true));
 	
-	public static final RegistryObject<MultiPotionBottle> ELIXERBOTTLE = ITEMS.register("elixir_bottle", MultiPotionBottle::new);
+	public static final RegistryObject<MultiPotionBottle> ELIXIRBOTTLE = ITEMS.register("elixir_bottle", MultiPotionBottle::new);
 	public static final RegistryObject<Elixir> ELIXIR = ITEMS.register("elixir", Elixir::new);
+	public static final RegistryObject<ThrowableMultiPotion> SPLASH_ELIXIR = ITEMS.register("splash_elixir", () -> new ThrowableMultiPotion(new Properties().tab(CreativeModeTab.TAB_BREWING).stacksTo(6), false));
+	public static final RegistryObject<ThrowableMultiPotion> LINGERING_ELIXIR = ITEMS.register("lingering_elixir", () -> new ThrowableMultiPotion(new Properties().tab(CreativeModeTab.TAB_BREWING).stacksTo(6), true));
+	
 }

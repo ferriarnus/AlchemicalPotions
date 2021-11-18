@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "examplemod:item/splash_draught",
+    "layer1": "examplemod:item/draught_bottle_overlay_1",
+    "layer2": "examplemod:item/draught_bottle_overlay_2"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "type": "examplemod:alchemicalbrewing",
+  "potions": [
+    {
+      "item": "minecraft:potion"
+    },
+    {
+      "item": "minecraft:potion"
+    },
+    {
+      "item": "minecraft:potion"
+    },
+    {
+      "item": "minecraft:potion"
+    }
+  ],
+  "binders": [
+    {
+      "item": "minecraft:glowstone"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:glowstone"
+    }
+  ],
+  "result": {
+    "item": "examplemod:elixir",
+    "count": 2
+  }
+}

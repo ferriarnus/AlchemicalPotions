@@ -1,4 +1,4 @@
-package com.example.examplemod.crafting;
+package com.example.examplemod.crafting.brewing;
 
 import javax.annotation.Nonnull;
 

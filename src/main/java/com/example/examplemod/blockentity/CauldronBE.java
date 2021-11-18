@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import com.example.examplemod.crafting.CraftingRegistry;
-import com.example.examplemod.crafting.IAlchemicalBrewing;
-import com.example.examplemod.crafting.IHeatSource;
+import com.example.examplemod.crafting.brewing.IAlchemicalBrewing;
+import com.example.examplemod.crafting.heat.IHeatSource;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,7 +41,12 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 public class CauldronBE extends BlockEntity{
 	private CauldronHandler handler = new CauldronHandler(8);
 	private LazyOptional<IItemHandler> lazy = LazyOptional.of(() -> handler);
-	private FluidTank fluid = new FluidTank(1000);
+	private FluidTank fluid = new FluidTank(1000) {
+		@Override
+		public FluidStack drain(int maxDrain, FluidAction action) {
+			return FluidStack.EMPTY;
+		}
+	};
 	private LazyOptional<IFluidHandler> lazyfluid = LazyOptional.of(() -> fluid);
 	private static final VoxelShape INSIDE = Block.box(2.0D, 4.0D, 2.0D, 14.0D, 8.0D, 14.0D);
 	private int time = 0;

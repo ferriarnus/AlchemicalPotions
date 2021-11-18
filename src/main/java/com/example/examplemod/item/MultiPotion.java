@@ -53,7 +53,7 @@ public class MultiPotion extends Item{
 		
 		if (player == null || !player.getAbilities().instabuild) {
 			if (pStack.isEmpty()) {
-				return new ItemStack(Items.GLASS_BOTTLE);
+				return this.bottle();
 			}
 			
 			if (player != null) {
@@ -63,6 +63,10 @@ public class MultiPotion extends Item{
 		
 		pLevel.gameEvent(pLivingEntity, GameEvent.DRINKING_FINISH, pLivingEntity.eyeBlockPosition());
 		return pStack;
+	}
+	
+	public ItemStack bottle() {
+		return new ItemStack(Items.GLASS_BOTTLE);
 	}
 	
 	@Override
