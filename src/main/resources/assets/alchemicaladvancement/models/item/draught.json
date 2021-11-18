@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alchemicaladvancement:item/draught_bottle",
+    "layer1": "alchemicaladvancement:item/draught_bottle_overlay_1",
+    "layer2": "alchemicaladvancement:item/draught_bottle_overlay_2"
+  }
+}

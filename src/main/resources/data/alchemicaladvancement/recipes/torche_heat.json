@@ -1,0 +1,7 @@
+{
+  "type": "alchemicaladvancement:heatsource",
+  "block": {
+    "item": "minecraft:torch"
+  },
+  "time": 200
+}
