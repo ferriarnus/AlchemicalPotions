@@ -22,8 +22,9 @@
       "item": "minecraft:glowstone"
     }
   ],
+  "time": 150,
   "result": {
-    "item": "examplemod:elixir",
+    "item": "alchemicaladvancement:elixir",
     "count": 2
   }
 }

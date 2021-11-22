@@ -1,5 +1,6 @@
 package com.ferri.arnus.alchemicaladvancement.blockentity;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -59,6 +60,7 @@ public class CauldronBE extends BlockEntity{
 	private boolean heat = false;
 	private int color = Fluids.WATER.getAttributes().getColor();
 	private ItemStack result = ItemStack.EMPTY;
+	private int totaltime = 0;
 	
 	public CauldronBE(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(BlockentityRegistry.CAULDRON.get(), pWorldPosition, pBlockState);
@@ -116,6 +118,9 @@ public class CauldronBE extends BlockEntity{
 		color = Fluids.WATER.getAttributes().getColor();
 	}
 	
+	public float activeColor() {
+		return 1F - ((float) time/ (float) totaltime);
+	}
 	
 	public static void servertick(Level pLevel, BlockPos pPos, BlockState pState, CauldronBE pBlockEntity) {
 		if (pBlockEntity.time > 0) {
@@ -134,7 +139,8 @@ public class CauldronBE extends BlockEntity{
 		Optional<IAlchemicalBrewing> recipeFor = pLevel.getRecipeManager().getRecipeFor(CraftingRegistry.ALCHEMICALBREWING_TYPE, w, pLevel);
 		if (recipeFor.isPresent()) {
 			if (!pBlockEntity.active && pBlockEntity.result.isEmpty()) {
-				pBlockEntity.time = heatrecipe.get().getTime();
+				pBlockEntity.time = heatrecipe.get().getTimeModifier() * recipeFor.get().getTime();
+				pBlockEntity.totaltime = pBlockEntity.time;
 				pBlockEntity.active = true;
 				pLevel.sendBlockUpdated(pPos, pState, pState, 2);
 			}
@@ -170,6 +176,7 @@ public class CauldronBE extends BlockEntity{
 		pTag.putBoolean("heat", heat);
 		pTag.putInt("color", color);
 		pTag.putInt("time", time);
+		pTag.putInt("totaltime", totaltime);
 		fluid.writeToNBT(pTag);
 		pTag.put("Items", handler.serializeNBT());
 		return super.save(pTag);
@@ -181,6 +188,7 @@ public class CauldronBE extends BlockEntity{
 		this.heat = pTag.getBoolean("heat");
 		this.color = pTag.getInt("color");
 		this.time = pTag.getInt("time");
+		this.totaltime = pTag.getInt("totaltime");
 		fluid.readFromNBT(pTag);
 		handler.deserializeNBT(pTag.getCompound("Items"));
 		super.load(pTag);
@@ -188,24 +196,14 @@ public class CauldronBE extends BlockEntity{
 	
 	@Override
 	public void handleUpdateTag(CompoundTag tag) {
-		super.handleUpdateTag(tag);
-		this.active = tag.getBoolean("active");
-		this.heat = tag.getBoolean("heat");
-		this.color = tag.getInt("color");
-		this.time = tag.getInt("time");
-		handler.deserializeNBT(tag.getCompound("Items"));
-		fluid.readFromNBT(tag);
+		super.handleUpdateTag(tag);;
+		load(tag);
 	}
 	
 	@Override
 	public CompoundTag getUpdateTag() {
 		CompoundTag pTag = super.getUpdateTag();
-		pTag.putBoolean("active", active);
-		pTag.putBoolean("heat", heat);
-		pTag.putInt("color", color);
-		pTag.putInt("time", time);
-		fluid.writeToNBT(pTag);
-		pTag.put("Items", handler.serializeNBT());
+		save(pTag);
 		return pTag;
 	}
 	
@@ -260,7 +258,7 @@ public class CauldronBE extends BlockEntity{
 			if (stacks.get(slot).is(Items.POTION)) {
 				color =  PotionUtils.getColor(stacks.get(slot));
 			} else {
-				
+				color = Color.YELLOW.getRGB();
 			}
 			setChanged();
 		}

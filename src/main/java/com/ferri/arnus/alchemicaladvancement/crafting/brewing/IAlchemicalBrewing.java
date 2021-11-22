@@ -14,6 +14,8 @@ public interface IAlchemicalBrewing extends Recipe<RecipeWrapper>{
 
 	ResourceLocation TYPE_ID = new ResourceLocation(AlchemicalAdvancement.MODID, "alchemicalbrewing");
 	
+	int getTime();
+	
 	@Nonnull
 	@Override
 	default RecipeType<?> getType() {

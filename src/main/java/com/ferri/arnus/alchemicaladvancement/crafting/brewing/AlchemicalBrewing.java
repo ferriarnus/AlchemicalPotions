@@ -31,14 +31,15 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 	private NonNullList<Ingredient> binders;
 	private NonNullList<Ingredient> ingredients = NonNullList.create();
 	private ItemStack resultitem;
-	private boolean isSimple;
 	private ResourceLocation id;
+	private int time;
 	
-	public AlchemicalBrewing(ResourceLocation id, NonNullList<Ingredient> potions, NonNullList<Ingredient> binders,  ItemStack result) {
+	public AlchemicalBrewing(ResourceLocation id, NonNullList<Ingredient> potions, NonNullList<Ingredient> binders, int time, ItemStack result) {
 		this.id = id;
 		this.potions = potions;
 		this.resultitem = result;
 		this.binders = binders;
+		this.time = time;
 		for (int i=0; i< 8; i++) {
 			if (i%2==0) {
 				this.ingredients.add(this.potions.get(i/2));
@@ -46,7 +47,6 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 				this.ingredients.add(this.binders.get((i-1)/2));
 			}
 		}
-		this.isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
 	}
 
 	@Override
@@ -127,14 +127,20 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 		return binders;
 	}
 	
+	@Override
+	public int getTime() {
+		return time ;
+	}
+	
 	static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<IAlchemicalBrewing> {
 
 		@Override
 		public IAlchemicalBrewing fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
 			NonNullList<Ingredient> potions = itemsFromJson(GsonHelper.getAsJsonArray(pSerializedRecipe, "potions"));
 			NonNullList<Ingredient> binders = itemsFromJson(GsonHelper.getAsJsonArray(pSerializedRecipe, "binders"));
+			int time = pSerializedRecipe.get("time").getAsInt();
 			ItemStack itemstack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "result"));
-			return new AlchemicalBrewing(pRecipeId, potions, binders, itemstack);
+			return new AlchemicalBrewing(pRecipeId, potions, binders, time, itemstack);
 			
 		}
 
@@ -149,8 +155,9 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 			for(int j = 0; j < binders.size(); ++j) {
 				binders.set(j, Ingredient.fromNetwork(pBuffer));
 			}
+			int time = pBuffer.readVarInt();
 			ItemStack itemstack = pBuffer.readItem();
-			return new AlchemicalBrewing(pRecipeId, potions, binders, itemstack);
+			return new AlchemicalBrewing(pRecipeId, potions, binders, time, itemstack);
 		}
 
 		@Override
@@ -159,6 +166,7 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 			for(Ingredient ingredient : pRecipe.getIngredients()) {
 				ingredient.toNetwork(pBuffer);
 			}
+			pBuffer.writeVarInt(pRecipe.getTime());
 			pBuffer.writeItem(pRecipe.getResultItem());
 		}
 		
@@ -174,5 +182,4 @@ public class AlchemicalBrewing implements IAlchemicalBrewing{
 		}
 		
 	}
-
 }

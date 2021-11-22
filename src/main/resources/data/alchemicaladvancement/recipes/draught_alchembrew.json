@@ -16,8 +16,9 @@
       "item": "minecraft:glowstone"
     }
   ],
+  "time": 1000,
   "result": {
-    "item": "examplemod:draught",
+    "item": "alchemicaladvancement:draught",
     "count": 2
   }
 }

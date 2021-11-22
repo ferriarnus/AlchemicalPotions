@@ -28,4 +28,6 @@ public class ItemRegistry {
 	public static final RegistryObject<ThrowableMultiPotion> SPLASH_ELIXIR = ITEMS.register("splash_elixir", () -> new ThrowableMultiPotion(new Properties().tab(CreativeModeTab.TAB_BREWING).stacksTo(6), false));
 	public static final RegistryObject<ThrowableMultiPotion> LINGERING_ELIXIR = ITEMS.register("lingering_elixir", () -> new ThrowableMultiPotion(new Properties().tab(CreativeModeTab.TAB_BREWING).stacksTo(6), true));
 	
+	public static final RegistryObject<MultiTippedArrow> MULTITIPPED_ARROW = ITEMS.register("multitipped_arrow", MultiTippedArrow::new);
+
 }

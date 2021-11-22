@@ -16,7 +16,7 @@ public interface IHeatSource extends Recipe<RecipeWrapper>{
 	ResourceLocation TYPE_ID = new ResourceLocation(AlchemicalAdvancement.MODID, "heatsource");
 	
 	@Nonnull
-	int getTime();
+	int getTimeModifier();
 	
 	@Nonnull
 	ItemStack getBlock();

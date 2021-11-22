@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Random;
 
 import com.ferri.arnus.alchemicaladvancement.blockentity.CauldronBE;
+import com.ferri.arnus.alchemicaladvancement.particle.ColoredSmokeData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
@@ -17,7 +18,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Con
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 
@@ -38,13 +38,13 @@ public class Cauldronrenderer implements BlockEntityRenderer<CauldronBE>{
 		BlockPos pPos =pBlockEntity.getBlockPos();
 		Random random = pLevel.random;
 		if (pBlockEntity.hasHeat() && pLevel.getGameTime() % 20 == 0 && pBlockEntity.getHeigth() > 0F) {
-		    pLevel.addAlwaysVisibleParticle(ParticleTypes.BUBBLE, true, (double)pPos.getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), (double)pPos.getY() + random.nextDouble() + random.nextDouble(), (double)pPos.getZ() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), 0.0D, 0.01D, 0.0D);
+		    //pLevel.addAlwaysVisibleParticle(ParticleTypes.BUBBLE, true, (double)pPos.getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), (double)pPos.getY() + random.nextDouble() + random.nextDouble(), (double)pPos.getZ() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), 0.0D, 0.01D, 0.0D);
 		}
-		if (pBlockEntity.isActive() && pLevel.getGameTime() % 20 == 0) {
-		    pLevel.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, true, (double)pPos.getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), (double)pPos.getY() + random.nextDouble() + random.nextDouble(), (double)pPos.getZ() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), 0.0D, 0.01D, 0.0D);
+		if (pBlockEntity.isActive() && pLevel.getGameTime() % 10 == 0) {
+		    pLevel.addAlwaysVisibleParticle(ColoredSmokeData.withColor(pBlockEntity.activeColor(), pBlockEntity.activeColor(), pBlockEntity.activeColor()), true, (double)pPos.getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), (double)pPos.getY() + random.nextDouble() + random.nextDouble(), (double)pPos.getZ() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), 0.0D, 0.01D, 0.0D);
 		}
-		if (!pBlockEntity.getResult().isEmpty() && pLevel.getGameTime() % 20 == 0) {
-		    pLevel.addAlwaysVisibleParticle(ParticleTypes.SMOKE, true, (double)pPos.getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), (double)pPos.getY() + random.nextDouble() + random.nextDouble(), (double)pPos.getZ() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), 0.0D, 0.01D, 0.0D);
+		if (!pBlockEntity.getResult().isEmpty() && pLevel.getGameTime() % 15 == 0) {
+		    pLevel.addAlwaysVisibleParticle(ColoredSmokeData.withColor(1, 1, 1), true, (double)pPos.getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), (double)pPos.getY() + random.nextDouble() + random.nextDouble(), (double)pPos.getZ() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), 0.0D, 0.01D, 0.0D);
 		}
 	}
 	

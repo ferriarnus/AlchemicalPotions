@@ -17,7 +17,7 @@ public class HeatSource implements IHeatSource{
 	public static final RecipeSerializer<IHeatSource> SERIALIZER = new Serializer();
 	private ResourceLocation id ;
 	private ItemStack block;
-	private int time;
+	private int time = 1;
 
 	public HeatSource(ResourceLocation id, ItemStack block, int time) {
 		this.id = id;
@@ -56,7 +56,7 @@ public class HeatSource implements IHeatSource{
 	}
 
 	@Override
-	public int getTime() {
+	public int getTimeModifier() {
 		return time;
 	}
 	
@@ -84,7 +84,7 @@ public class HeatSource implements IHeatSource{
 		@Override
 		public void toNetwork(FriendlyByteBuf pBuffer, IHeatSource pRecipe) {
 			pBuffer.writeItem(pRecipe.getBlock());
-			pBuffer.writeVarInt(pRecipe.getTime());
+			pBuffer.writeVarInt(pRecipe.getTimeModifier());
 		}
 		
 	}
